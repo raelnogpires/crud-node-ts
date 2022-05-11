@@ -3,5 +3,5 @@ export default interface IPost {
     title: string,
     author: string,
     category: string,
-    publicationDate: Date,
+    publicationDate: string,
 }
