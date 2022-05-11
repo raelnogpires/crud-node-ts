@@ -20,9 +20,13 @@ export default class PostModel {
         return { id: result.insertId, title, author, category, publicationDate };
     }
 
-    public async editPost(id: number, author: string, category: string, publicationDate: string): Promise<void> {
+    public async editPost(id: number, title: string, author: string, category: string, publicationDate: string): Promise<void> {
         await connection.execute(
             'UPDATE Posts SET title = ?, author = ?, category = ?, publicationDate = ? WHERE id = ?',
             [title, author, category, publicationDate, id])
+    }
+
+    public async deletePost(id: number): Promise<void> {
+        await connection.execute('DELETE FROM Posts WHERE id = ?', [id]);
     }
 }
