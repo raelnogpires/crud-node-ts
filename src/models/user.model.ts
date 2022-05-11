@@ -20,4 +20,14 @@ export default class UserModel {
             [name, email, password]);
         return { id: result.insertId, name, email };
     }
+
+    public async editUser(id: number, name: string, email: string, password: string): Promise<void> {
+        await connection.execute(
+            'UPDATE Users SET name = ?, email = ?, password = ? WHERE id = ?',
+            [name, email, password, id]);
+    }
+
+    public async deleteUser(id: number): Promise<void> {
+        await connection.execute('DELETE FROM Users WHERE id = ?', [id]);
+    }
 }
