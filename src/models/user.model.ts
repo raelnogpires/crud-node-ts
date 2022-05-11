@@ -1,3 +1,4 @@
+import { ResultSetHeader } from "mysql2";
 import connection from "../database/connection";
 import IUser from "../interfaces/user.interface";
 
@@ -9,8 +10,14 @@ export default class UserModel {
 
     public async getUserById(id: number): Promise<IUser[]> {
         const [result] = await connection.execute(
-            'SELECT id, name, email FROM Users WHERE id = ?', [id]
-        );
+            'SELECT id, name, email FROM Users WHERE id = ?', [id]);
         return result as IUser[];
+    }
+
+    public async createUser(name: string, email: string, password: string ): Promise<IUser> {
+        const [result] = await connection.execute<ResultSetHeader>(
+            'INSERT INTO Users (name, email, password) VALUES (?, ?, ?)',
+            [name, email, password]);
+        return { id: result.insertId, name, email };
     }
 }
