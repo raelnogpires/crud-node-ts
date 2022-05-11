@@ -19,7 +19,7 @@ export default class UserModel {
         const [result] = await connection.execute<ResultSetHeader>(
             'INSERT INTO Users (name, email, password) VALUES (?, ?, ?)',
             [name, email, password]);
-        return { id: result.insertId, name, email };
+        return { id: result.insertId, name, email, password };
     }
 
     public async editUser(id: number, name: string, email: string, password: string): Promise<void> {

@@ -30,4 +30,6 @@ export default class PostModel {
     public async deletePost(id: number): Promise<void> {
         await connection.execute('DELETE FROM Posts WHERE id = ?', [id]);
     }
+
+    // needs searchByQuery method
 }
