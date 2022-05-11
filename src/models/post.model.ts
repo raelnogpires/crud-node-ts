@@ -8,9 +8,10 @@ export default class PostModel {
         return result as IPost[];
     }
 
-    public async getPostById(id: number): Promise<IPost[]> {
+    public async getPostById(id: number): Promise<IPost> {
         const [result] = await connection.execute('SELECT * FROM Posts WHERE id = ?', [id]);
-        return result as IPost[];
+        const [final] = result as IPost[];
+        return final;
     }
 
     public async createPost(title: string, author: string, category: string, publicationDate: string): Promise<IPost> {

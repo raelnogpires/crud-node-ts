@@ -8,10 +8,11 @@ export default class UserModel {
         return result as IUser[];
     }
 
-    public async getUserById(id: number): Promise<IUser[]> {
+    public async getUserById(id: number): Promise<IUser> {
         const [result] = await connection.execute(
             'SELECT id, name, email FROM Users WHERE id = ?', [id]);
-        return result as IUser[];
+        const [final] = result as IUser[];
+        return final;
     }
 
     public async createUser(name: string, email: string, password: string ): Promise<IUser> {
