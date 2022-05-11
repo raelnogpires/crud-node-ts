@@ -10,6 +10,7 @@ export default class UserService {
         if (!users) {
             throw new InternalServerError('internal server error');
         }
+
         return users;
     }
 
@@ -18,6 +19,7 @@ export default class UserService {
         if (!user) {
             throw new NotFoundError('user not found');
         }
+
         return user;
     }
 

@@ -31,5 +31,10 @@ export default class PostModel {
         await connection.execute('DELETE FROM Posts WHERE id = ?', [id]);
     }
 
-    // needs searchByQuery method
+    public async searchByQuery(query: string): Promise<IPost[] | IPost | void> {
+        const [result] = await connection.execute(
+            'SELECT * FROM Posts WHERE author = ? OR category = ? OR publicationDate = ?',
+            [query, query, query]);
+        return result as IPost[] | IPost;
+    }
 }
