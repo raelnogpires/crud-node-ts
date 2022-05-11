@@ -6,4 +6,11 @@ export default class UserModel {
         const [result] = await connection.execute('SELECT * FROM Users');
         return result as IUser[];
     }
+
+    public async getUserById(id: number): Promise<IUser[]> {
+        const [result] = await connection.execute(
+            'SELECT id, name, email FROM Users WHERE id = ?', [id]
+        );
+        return result as IUser[];
+    }
 }
