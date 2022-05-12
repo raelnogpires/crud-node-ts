@@ -7,14 +7,14 @@ export default class PostService {
 
     public getAllPosts = async (): Promise<IPost[]> => {
         const posts = await this.model.getAllPosts();
-        if (!posts) throw new InternalServerError('internal server error');
+        if (!posts) throw new InternalServerError('internal server error.');
 
         return posts;
     }
 
     public getPostById = async (id: number): Promise<IPost> => {
         const post = await this.model.getPostById(id);
-        if (!post) throw new NotFoundError('post not found');
+        if (!post) throw new NotFoundError('post not found.');
 
         return post;
     }
@@ -33,7 +33,7 @@ export default class PostService {
 
     public deletePost = async (id: number): Promise<void> => {
         const exist = await this.model.getPostById(id);
-        if (!exist) throw new NotFoundError('post not found')
+        if (!exist) throw new NotFoundError('post not found.')
 
         await this.model.deletePost(id);
     }
