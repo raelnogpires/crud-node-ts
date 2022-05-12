@@ -20,16 +20,19 @@ class UserController {
         this.getAllUsers = (_req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const users = yield this.service.getAllUsers();
             if (!users) {
-                return next({ code: 500, message: 'internal server error.' });
+                return next({ code: http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, message: 'internal server error.' });
             }
             return res.status(http_status_codes_1.StatusCodes.OK).json(users);
         });
         this.getUserById = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const n = parseInt(id);
+            if (n === NaN) {
+                return next({ code: http_status_codes_1.StatusCodes.BAD_REQUEST, message: 'id must be an integer number.' });
+            }
             const user = yield this.service.getUserById(n);
             if (!user) {
-                return next({ code: 404, message: 'user not found.' });
+                return next({ code: http_status_codes_1.StatusCodes.NOT_FOUND, message: 'user not found.' });
             }
             return res.status(http_status_codes_1.StatusCodes.OK).json(user);
         });
@@ -48,6 +51,9 @@ class UserController {
         this.deleteUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const n = parseInt(id);
+            if (n === NaN) {
+                return next({ code: http_status_codes_1.StatusCodes.BAD_REQUEST, message: 'id must be an integer number.' });
+            }
             const user = this.service.getUserById(n);
             if (!user) {
                 return next({ code: 404, message: 'user not found.' });

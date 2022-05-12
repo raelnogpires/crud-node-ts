@@ -77,10 +77,6 @@ export const registerUserValidation = async (req: Request, res: Response, next: 
 export const editUserValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { id } = req.params;
     const n = parseInt(id);
-    if (n === NaN) {
-        return next({ code: StatusCodes.BAD_REQUEST, message: 'id must be an integer number.' })
-    }
-
     const { name, email, password } = req.body;
 
     const nameV = nameValidation(name);

@@ -17,10 +17,6 @@ export default class UserController {
     public getUserById = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const { id } = req.params;
         const n = parseInt(id);
-        if (n === NaN) {
-            return next({ code: StatusCodes.BAD_REQUEST, message: 'id must be an integer number.' })
-        }
-
         const user = await this.service.getUserById(n);
         if (!user) {
             return next({ code: StatusCodes.NOT_FOUND, message: 'user not found.' });
@@ -46,10 +42,6 @@ export default class UserController {
     public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const { id } = req.params;
         const n = parseInt(id);
-        if (n === NaN) {
-            return next({ code: StatusCodes.BAD_REQUEST, message: 'id must be an integer number.' })
-        }
-
         const user = this.service.getUserById(n);
         if (!user) {
             return next({ code: 404, message: 'user not found.' });

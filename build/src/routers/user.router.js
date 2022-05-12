@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const user_controller_1 = __importDefault(require("../controllers/user.controller"));
 const userValidation_1 = __importDefault(require("../middleware/userValidation"));
+const user_fieldValidation_1 = require("../middleware/user.fieldValidation");
 const router = (0, express_1.Router)();
 const controller = new user_controller_1.default();
 router
     .get('/', controller.getAllUsers)
     .get('/:id', controller.getUserById)
-    .post('/', userValidation_1.default, controller.createUser)
-    .put('/:id', userValidation_1.default, controller.editUser)
+    .post('/', user_fieldValidation_1.registerUserValidation, userValidation_1.default, controller.createUser)
+    .put('/:id', user_fieldValidation_1.editUserValidation, userValidation_1.default, controller.editUser)
     .delete('/:id', controller.deleteUser);
 exports.default = router;

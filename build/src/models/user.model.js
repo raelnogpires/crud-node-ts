@@ -27,6 +27,13 @@ class UserModel {
             return final;
         });
     }
+    getUserByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [result] = yield connection_1.default.execute('SELECT id, name, email FROM Users WHERE email = ?', [email]);
+            const [final] = result;
+            return final;
+        });
+    }
     createUser(name, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const [result] = yield connection_1.default.execute('INSERT INTO Users (name, email, password) VALUES (?, ?, ?)', [name, email, password]);
