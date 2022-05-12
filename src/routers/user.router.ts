@@ -7,7 +7,7 @@ const controller = new UserController()
 
 router
     .get('/', controller.getAllUsers)
-    .get(':id', controller.getUserById)
+    .get('/:id', controller.getUserById)
     .post('/', userValidation, controller.createUser)
     .put('/:id', userValidation, controller.editUser)
     .delete('/:id', controller.deleteUser)

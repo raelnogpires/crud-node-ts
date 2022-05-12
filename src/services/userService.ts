@@ -5,16 +5,16 @@ import UserModel from "../models/user.model";
 export default class UserService {
     private model = new UserModel();
 
-    public getAllUsers = async (): Promise<IUser[]> => {
+    public getAllUsers = async (): Promise<IUser[] | boolean> => {
         const users = await this.model.getAllUsers();
-        if (!users) throw new InternalServerError('internal server error.');
+        if (!users) return false;
 
         return users;
     }
 
-    public getUserById = async (id: number): Promise<IUser> => {
+    public getUserById = async (id: number): Promise<IUser | boolean> => {
         const user = await this.model.getUserById(id);
-        if (!user) throw new NotFoundError('user not found.');
+        if (!user) return false;
 
         return user;
     }
@@ -32,8 +32,6 @@ export default class UserService {
 
     public deleteUser = async (id: number): Promise<void> => {
         const exist = await this.model.getUserById(id);
-        if (!exist) throw new NotFoundError('user not found.')
-
         await this.model.deleteUser(id);
     }
 }
