@@ -1,20 +1,26 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import PostService from "../services/postService";
 
 export default class PostController {
     private service = new PostService();
 
-    public getAllPosts = async (req: Request, res: Response): Promise<Response> => {
+    public getAllPosts = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const posts = await this.service.getAllPosts();
+        if (!posts) {
+            return next({ code: 500, message: 'internal server error.' });
+        }
         return res.status(StatusCodes.OK).json(posts);
     }
 
-    public getPostById = async (req: Request, res: Response): Promise<Response> => {
+    public getPostById = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const { id } = req.params;
         const n = parseInt(id);
-        const user = await this.service.getPostById(n);
-        return res.status(StatusCodes.OK).json(user);
+        const post = await this.service.getPostById(n);
+        if (!post) {
+            return next({ code: 404, message: 'post not found.' });
+        }
+        return res.status(StatusCodes.OK).json(post);
     }
 
     public createPost = async (req: Request, res: Response): Promise<Response> => {
@@ -28,14 +34,19 @@ export default class PostController {
         const { id } = req.params;
         const n = parseInt(id);
         await this.service.editPost({ id: n, ...post });
-        return res.status(StatusCodes.OK).json({ message: 'post edited sucessfully' });
+        return res.status(StatusCodes.OK).json({ message: 'post edited sucessfully.' });
     }
 
-    public deletePost = async (req: Request, res: Response): Promise<Response> => {
+    public deletePost = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const { id } = req.params;
         const n = parseInt(id);
+        const exist = await this.service.getPostById(n);
+        if (!n) {
+            return next({ code: 404, message: 'post not found.'})
+        }
+
         await this.service.deletePost(n);
-        return res.status(StatusCodes.NO_CONTENT).json({ message: 'post deleted' });
+        return res.status(StatusCodes.OK).json({ message: 'post deleted.' });
     }
 
     public searchByQuery = async (req: Request, res: Response): Promise<Response> => {

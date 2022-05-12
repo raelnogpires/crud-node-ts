@@ -16,7 +16,7 @@ export default class PostModel {
 
     public async createPost(title: string, author: string, category: string, publicationDate: string): Promise<IPost> {
         const [result] = await connection.execute<ResultSetHeader>(
-            'INSERT INTO Posts (title, author, category, publicationDate)',
+            'INSERT INTO Posts (title, author, category, publicationDate) VALUES (?, ?, ?, ?)',
             [title, author, category, publicationDate]);
         return { id: result.insertId, title, author, category, publicationDate };
     }

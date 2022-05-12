@@ -43,7 +43,7 @@ class UserController {
             const { id } = req.params;
             const n = parseInt(id);
             yield this.service.editUser(Object.assign({ id: n }, edit));
-            return res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'user edited sucessfully' });
+            return res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'user edited sucessfully.' });
         });
         this.deleteUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
@@ -53,7 +53,7 @@ class UserController {
                 return next({ code: 404, message: 'user not found.' });
             }
             yield this.service.deleteUser(n);
-            return res.status(http_status_codes_1.StatusCodes.NO_CONTENT).json({ message: 'user deleted' });
+            return res.status(http_status_codes_1.StatusCodes.NO_CONTENT).json({ message: 'user deleted.' });
         });
     }
 }

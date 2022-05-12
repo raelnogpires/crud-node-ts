@@ -37,7 +37,7 @@ export default class UserController {
         const { id } = req.params;
         const n = parseInt(id);
         await this.service.editUser({ id: n, ...edit });
-        return res.status(StatusCodes.OK).json({ message: 'user edited sucessfully' })
+        return res.status(StatusCodes.OK).json({ message: 'user edited sucessfully.' })
     }
 
     public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
@@ -49,6 +49,6 @@ export default class UserController {
         }
 
         await this.service.deleteUser(n);
-        return res.status(StatusCodes.NO_CONTENT).json({ message: 'user deleted' });
+        return res.status(StatusCodes.NO_CONTENT).json({ message: 'user deleted.' });
     }
 }

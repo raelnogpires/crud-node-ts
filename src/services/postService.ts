@@ -5,16 +5,16 @@ import PostModel from "../models/post.model";
 export default class PostService {
     private model = new PostModel();
 
-    public getAllPosts = async (): Promise<IPost[]> => {
+    public getAllPosts = async (): Promise<IPost[] | boolean> => {
         const posts = await this.model.getAllPosts();
-        if (!posts) throw new InternalServerError('internal server error.');
+        if (!posts) return false;
 
         return posts;
     }
 
-    public getPostById = async (id: number): Promise<IPost> => {
+    public getPostById = async (id: number): Promise<IPost | boolean> => {
         const post = await this.model.getPostById(id);
-        if (!post) throw new NotFoundError('post not found.');
+        if (!post) return false;
 
         return post;
     }
@@ -32,9 +32,6 @@ export default class PostService {
     }
 
     public deletePost = async (id: number): Promise<void> => {
-        const exist = await this.model.getPostById(id);
-        if (!exist) throw new NotFoundError('post not found.')
-
         await this.model.deletePost(id);
     }
 

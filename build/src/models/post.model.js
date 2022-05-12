@@ -29,7 +29,7 @@ class PostModel {
     }
     createPost(title, author, category, publicationDate) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [result] = yield connection_1.default.execute('INSERT INTO Posts (title, author, category, publicationDate)', [title, author, category, publicationDate]);
+            const [result] = yield connection_1.default.execute('INSERT INTO Posts (title, author, category, publicationDate) VALUES (?, ?, ?, ?)', [title, author, category, publicationDate]);
             return { id: result.insertId, title, author, category, publicationDate };
         });
     }

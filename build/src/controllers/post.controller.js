@@ -17,15 +17,21 @@ const postService_1 = __importDefault(require("../services/postService"));
 class PostController {
     constructor() {
         this.service = new postService_1.default();
-        this.getAllPosts = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.getAllPosts = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const posts = yield this.service.getAllPosts();
+            if (!posts) {
+                return next({ code: 500, message: 'internal server error.' });
+            }
             return res.status(http_status_codes_1.StatusCodes.OK).json(posts);
         });
-        this.getPostById = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.getPostById = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const n = parseInt(id);
-            const user = yield this.service.getPostById(n);
-            return res.status(http_status_codes_1.StatusCodes.OK).json(user);
+            const post = yield this.service.getPostById(n);
+            if (!post) {
+                return next({ code: 404, message: 'post not found.' });
+            }
+            return res.status(http_status_codes_1.StatusCodes.OK).json(post);
         });
         this.createPost = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const post = req.body;
@@ -37,13 +43,17 @@ class PostController {
             const { id } = req.params;
             const n = parseInt(id);
             yield this.service.editPost(Object.assign({ id: n }, post));
-            return res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'post edited sucessfully' });
+            return res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'post edited sucessfully.' });
         });
-        this.deletePost = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.deletePost = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const n = parseInt(id);
+            const exist = yield this.service.getPostById(n);
+            if (!n) {
+                return next({ code: 404, message: 'post not found.' });
+            }
             yield this.service.deletePost(n);
-            return res.status(http_status_codes_1.StatusCodes.NO_CONTENT).json({ message: 'post deleted' });
+            return res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'post deleted.' });
         });
         this.searchByQuery = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { q } = req.query;

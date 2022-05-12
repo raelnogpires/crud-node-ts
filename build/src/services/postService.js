@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const restify_errors_1 = require("restify-errors");
 const post_model_1 = __importDefault(require("../models/post.model"));
 class PostService {
     constructor() {
@@ -20,13 +19,13 @@ class PostService {
         this.getAllPosts = () => __awaiter(this, void 0, void 0, function* () {
             const posts = yield this.model.getAllPosts();
             if (!posts)
-                throw new restify_errors_1.InternalServerError('internal server error.');
+                return false;
             return posts;
         });
         this.getPostById = (id) => __awaiter(this, void 0, void 0, function* () {
             const post = yield this.model.getPostById(id);
             if (!post)
-                throw new restify_errors_1.NotFoundError('post not found.');
+                return false;
             return post;
         });
         this.createPost = (p) => __awaiter(this, void 0, void 0, function* () {
@@ -39,9 +38,6 @@ class PostService {
             yield this.model.editPost(id, title, author, category, publicationDate);
         });
         this.deletePost = (id) => __awaiter(this, void 0, void 0, function* () {
-            const exist = yield this.model.getPostById(id);
-            if (!exist)
-                throw new restify_errors_1.NotFoundError('post not found.');
             yield this.model.deletePost(id);
         });
         this.searchByQuery = (query) => __awaiter(this, void 0, void 0, function* () {

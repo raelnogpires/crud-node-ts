@@ -29,12 +29,12 @@ const postValidation = async (req: Request, res: Response, next: NextFunction): 
 
     const [valid, property] = validateProperties(post);
     if (!valid) {
-        return res.status(StatusCodes.BAD_REQUEST).send(`the field ${property} is necessary.`);
+        return res.status(StatusCodes.BAD_REQUEST).json(`the field ${property} is necessary.`);
     }
 
     const [v, p] = validateValues(post);
     if (!valid) {
-        return res.status(StatusCodes.BAD_REQUEST).send(`the field ${p} can't be null or empty.`);
+        return res.status(StatusCodes.BAD_REQUEST).json(`the field ${p} can't be null or empty.`);
     }
 
     return next();

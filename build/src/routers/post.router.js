@@ -11,6 +11,7 @@ const controller = new post_controller_1.default();
 router
     .get('/search', controller.searchByQuery)
     .get('/', controller.getAllPosts)
+    .get('/:id', controller.getPostById)
     .post('/', postValidation_1.default, controller.createPost)
     .put('/:id', postValidation_1.default, controller.editPost)
     .delete('/:id', controller.deletePost);

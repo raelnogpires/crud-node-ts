@@ -8,6 +8,7 @@ const controller = new PostController();
 router
     .get('/search', controller.searchByQuery)
     .get('/', controller.getAllPosts)
+    .get('/:id', controller.getPostById)
     .post('/', postValidation, controller.createPost)
     .put('/:id', postValidation, controller.editPost)
     .delete('/:id', controller.deletePost)
