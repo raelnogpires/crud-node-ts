@@ -17,14 +17,20 @@ const userService_1 = __importDefault(require("../services/userService"));
 class UserController {
     constructor() {
         this.service = new userService_1.default();
-        this.getAllUsers = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.getAllUsers = (_req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const users = yield this.service.getAllUsers();
+            if (!users) {
+                return next({ code: 500, message: 'internal server error.' });
+            }
             return res.status(http_status_codes_1.StatusCodes.OK).json(users);
         });
-        this.getUserById = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.getUserById = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const n = parseInt(id);
             const user = yield this.service.getUserById(n);
+            if (!user) {
+                return next({ code: 404, message: 'user not found.' });
+            }
             return res.status(http_status_codes_1.StatusCodes.OK).json(user);
         });
         this.createUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -39,9 +45,13 @@ class UserController {
             yield this.service.editUser(Object.assign({ id: n }, edit));
             return res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'user edited sucessfully' });
         });
-        this.deleteUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.deleteUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const n = parseInt(id);
+            const user = this.service.getUserById(n);
+            if (!user) {
+                return next({ code: 404, message: 'user not found.' });
+            }
             yield this.service.deleteUser(n);
             return res.status(http_status_codes_1.StatusCodes.NO_CONTENT).json({ message: 'user deleted' });
         });

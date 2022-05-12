@@ -9,7 +9,7 @@ export default class UserController {
     public getAllUsers = async (_req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const users = await this.service.getAllUsers();
         if (!users) {
-            return next(new InternalServerError({ code: 500, message: 'internal server error.' }));
+            return next({ code: 500, message: 'internal server error.' });
         }
 
         return res.status(StatusCodes.OK).json(users);
@@ -20,7 +20,7 @@ export default class UserController {
         const n = parseInt(id);
         const user = await this.service.getUserById(n);
         if (!user) {
-            return next(new InternalServerError({ code: 404, message: 'user not found.' }));
+            return next({ code: 404, message: 'user not found.' });
         }
 
         return res.status(StatusCodes.OK).json(user);
@@ -45,7 +45,7 @@ export default class UserController {
         const n = parseInt(id);
         const user = this.service.getUserById(n);
         if (!user) {
-            return next(new InternalServerError({ code: 404, message: 'user not found.' }));
+            return next({ code: 404, message: 'user not found.' });
         }
 
         await this.service.deleteUser(n);
