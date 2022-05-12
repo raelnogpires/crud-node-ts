@@ -41,15 +41,12 @@ class PostService {
             yield this.model.deletePost(id);
         });
         this.searchByQuery = (query) => __awaiter(this, void 0, void 0, function* () {
-            const all = yield this.model.getAllPosts();
-            if (query === undefined) {
+            const posts = yield this.model.searchByQuery(query);
+            if (posts.length === 0) {
+                const all = yield this.model.getAllPosts();
                 return all;
             }
-            // not the best way to do it
-            const result = all.filter((p) => {
-                p.title.includes(query) || p.author.includes(query) || p.publicationDate.includes(query);
-            });
-            return result;
+            return posts;
         });
     }
 }

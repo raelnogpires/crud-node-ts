@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { InternalServerError } from "restify-errors";
 import UserService from "../services/userService";
 
 export default class UserController {
@@ -9,7 +8,7 @@ export default class UserController {
     public getAllUsers = async (_req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const users = await this.service.getAllUsers();
         if (!users) {
-            return next({ code: 500, message: 'internal server error.' });
+            return next({ code: StatusCodes.INTERNAL_SERVER_ERROR, message: 'internal server error.' });
         }
 
         return res.status(StatusCodes.OK).json(users);
@@ -18,9 +17,13 @@ export default class UserController {
     public getUserById = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const { id } = req.params;
         const n = parseInt(id);
+        if (n === NaN) {
+            return next({ code: StatusCodes.BAD_REQUEST, message: 'id must be an integer number.' })
+        }
+
         const user = await this.service.getUserById(n);
         if (!user) {
-            return next({ code: 404, message: 'user not found.' });
+            return next({ code: StatusCodes.NOT_FOUND, message: 'user not found.' });
         }
 
         return res.status(StatusCodes.OK).json(user);
@@ -43,6 +46,10 @@ export default class UserController {
     public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         const { id } = req.params;
         const n = parseInt(id);
+        if (n === NaN) {
+            return next({ code: StatusCodes.BAD_REQUEST, message: 'id must be an integer number.' })
+        }
+
         const user = this.service.getUserById(n);
         if (!user) {
             return next({ code: 404, message: 'user not found.' });

@@ -35,17 +35,13 @@ export default class PostService {
         await this.model.deletePost(id);
     }
 
-    public searchByQuery = async (query: string | undefined): Promise<IPost | IPost[]> => {
-        const all = await this.model.getAllPosts();
-        if (query === undefined) {
+    public searchByQuery = async (query?: string): Promise<IPost[]> => {
+        const posts = await this.model.searchByQuery(query);
+        if (posts.length === 0) {
+            const all = await this.model.getAllPosts();
             return all;
         }
 
-        // not the best way to do it
-        const result = all.filter((p) => {
-            p.title.includes(query) || p.author.includes(query) || p.publicationDate.includes(query);
-        });
-
-        return result;
+        return posts;
     }
 }

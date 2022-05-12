@@ -45,7 +45,9 @@ class PostModel {
     }
     searchByQuery(query) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [result] = yield connection_1.default.execute('SELECT * FROM Posts WHERE author = ? OR category = ? OR publicationDate = ?', [query, query, query]);
+            const s = 'SELECT * FROM Posts WHERE author LIKE ? OR category LIKE ? OR publicationDate LIKE ?';
+            const terms = [`%${query}$`, `%${query}$`, `%${query}$`];
+            const [result] = yield connection_1.default.execute(s, terms);
             return result;
         });
     }

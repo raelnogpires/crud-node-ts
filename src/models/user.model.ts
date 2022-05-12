@@ -15,6 +15,13 @@ export default class UserModel {
         return final;
     }
 
+    public async getUserByEmail(email: string): Promise<IUser> {
+        const [result] = await connection.execute(
+            'SELECT id, name, email FROM Users WHERE email = ?', [email]);
+        const [final] = result as IUser[];
+        return final;
+    }
+
     public async createUser(name: string, email: string, password: string ): Promise<IUser> {
         const [result] = await connection.execute<ResultSetHeader>(
             'INSERT INTO Users (name, email, password) VALUES (?, ?, ?)',

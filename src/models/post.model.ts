@@ -31,10 +31,10 @@ export default class PostModel {
         await connection.execute('DELETE FROM Posts WHERE id = ?', [id]);
     }
 
-    public async searchByQuery(query: string): Promise<IPost[] | IPost | void> {
-        const [result] = await connection.execute(
-            'SELECT * FROM Posts WHERE author = ? OR category = ? OR publicationDate = ?',
-            [query, query, query]);
-        return result as IPost[] | IPost;
+    public async searchByQuery(query?: string): Promise<IPost[]> {
+        const s = 'SELECT * FROM Posts WHERE author LIKE ? OR category LIKE ? OR publicationDate LIKE ?';
+        const terms = [`%${query}$`, `%${query}$`, `%${query}$`];
+        const [result] = await connection.execute(s, terms);
+        return result as IPost[];
     }
 }
